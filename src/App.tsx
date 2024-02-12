@@ -3,13 +3,12 @@ import './App.css';
 // import NavigationDrawer from './components/Drawer/navigationDrawer';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MapScreen from './screens/mapScreen';
-import { Button } from '@mui/material';
 
 function Root() {
   return (
     <div>
-      <Button>hello</Button>
-      {/* <NavigationDrawer /> */}
+
+
 
       <Routes>
         <Route path="/" element={<MapScreen />} />

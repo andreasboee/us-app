@@ -6,11 +6,14 @@ import { OSM, Vector as VectorSource } from "ol/source";
 import React, { useEffect, useRef } from "react";
 import VectorLayer from "ol/layer/Vector";
 import { Icon, Style } from "ol/style";
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
+
 
 
 export default function MapView() {
     const mapEl = useRef(null);
+
+
 
     const source = new VectorSource();
 
@@ -58,18 +61,12 @@ export default function MapView() {
 
 
 
+
     return (
         <Grid container direction="column">
-            <Grid container item xs={6} alignContent="flex-end" alignItems="flex-end">
-                <Grid item xs={6}>
-                    <Button
-                        variant="contained"
-                        color="primary"
+            <Grid container item xs alignContent="flex-end" display="flex" alignItems="flex-end" direction="row">
 
-                    >
-                        Select Area
-                    </Button>
-                </Grid>
+
 
             </Grid>
             <Grid item xs={6}>

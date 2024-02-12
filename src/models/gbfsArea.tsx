@@ -6,4 +6,5 @@ export interface gbfsArea {
     stationStatusUrl: string,
     systemInformationUrl: string,
     identifier: string,
+    key: string
 }

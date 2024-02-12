@@ -6,8 +6,7 @@ export default function getAreaInformation(area: gbfsArea) {
 
     // instance.defaults.headers.common['Authorization'] = area.identifier;
     // axios.defaults.headers.post['Client-Identifier'] = area.identifier;
-
-    const getStations = async () => axios.get(area.baseUrl + area.stationInfoSubUrl, {
+    const getSystemInformation = async () => axios.get(area.baseUrl + area.systemInformationUrl, {
         headers: {
             'Client-Identifier': area.identifier,
         }
@@ -16,8 +15,6 @@ export default function getAreaInformation(area: gbfsArea) {
         .catch((err: any) => console.error(err));
 
 
-
-    return getStations
-
+    return getSystemInformation
 
 }
