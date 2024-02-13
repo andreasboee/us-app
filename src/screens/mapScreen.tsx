@@ -25,15 +25,28 @@ export default function MapScreen() {
 
     function handleChangeArea(area: gbfsArea) {
         setArea(area)
-        getSystemInformation(area)
+        updateArea(area)
         getStationsOfArea(area)
         getAreaInformation(area)
+
+    }
+
+    async function updateArea(newArea: gbfsArea) {
+        const res = await getSystemInformation(newArea)
+        if (res) {
+            setArea({
+                ...newArea, system_id: res.data.system_id, language: res.data.language,
+                operator: res.data.operator, timezone: res.data.timezone, phone_number: res.data.phone_number,
+                rental_apps: res.data.rental_apps
+            });
+        }
 
     }
 
     const areas = [BergenArea, OsloArea, TrondheimArea, MilanoArea]
 
     const handleChange = (event: SelectChangeEvent<gbfsArea>) => {
+        console.log(event.target.value)
         const area = event.target.value;
         const areaObject = areas.find(areaObject => areaObject.areaName === area)
 
@@ -46,7 +59,6 @@ export default function MapScreen() {
     };
 
     const handleShowAreaInformation = () => {
-        getAreaInformation(area)
         setOpenDialog(true)
     }
 

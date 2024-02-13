@@ -14,6 +14,21 @@ export const OsloArea: gbfsArea = {
     },
     zoom: 12,
     operator: "",
-    phoneNumber: "",
-    email: ""
+    phone_number: "",
+    email: "",
+    system_id: "",
+    language: "",
+    timezone: "",
+    rental_apps: {
+        android: {
+            discovery_uri: "",
+            store_uri: ""
+        },
+        ios: {
+            discovery_uri: "",
+            store_uri: ""
+        }
+    },
+    last_updated: 0,
+    ttl: 0
 }

@@ -2,7 +2,7 @@ import { gbfsArea } from "../models/gbfsArea";
 
 export const BergenArea: gbfsArea = {
     areaName: "Bergen",
-    baseUrl: "https://gbfs.urbansharing.com/oslobysykkel.no/",
+    baseUrl: "https://gbfs.urbansharing.com/bergenbysykkel.no/",
     stationInfoSubUrl: "station_information.json",
     stationStatusUrl: "station_status.json",
     systemInformationUrl: "system_information.json",
@@ -14,6 +14,21 @@ export const BergenArea: gbfsArea = {
     },
     zoom: 12,
     operator: "",
-    phoneNumber: "",
-    email: ""
+    phone_number: "",
+    email: "",
+    system_id: "",
+    language: "",
+    timezone: "",
+    rental_apps: {
+        android: {
+            discovery_uri: "",
+            store_uri: ""
+        },
+        ios: {
+            discovery_uri: "",
+            store_uri: ""
+        }
+    },
+    last_updated: 0,
+    ttl: 0
 }

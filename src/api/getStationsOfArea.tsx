@@ -36,7 +36,7 @@ export default async function getStationInformation(area: gbfsArea) {
             console.error(err)
             return null
         });
-    console.log(result?.data.stations[0])
+    // console.log(result?.data.stations[0])
     return result
 
 

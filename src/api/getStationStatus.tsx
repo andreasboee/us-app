@@ -23,7 +23,7 @@ export default async function getStationStatus(area: gbfsArea) {
             console.error(err)
             return null
         });
-    console.log(result?.last_updated)
+    // console.log(result?.last_updated)
     return result
 
 }

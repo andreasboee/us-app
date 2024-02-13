@@ -103,22 +103,19 @@ export default function BookingDialog(props: { handleClose: () => void; open: bo
                                 Operator: {props.area.operator}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Phone Number: {props.area.phoneNumber}
+                                Phone Number: {props.area.phone_number}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Last updated: {props.area.email}
+                                Last updated: {props.area.last_updated}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                TTL: {props.area.email}
+                                TTL: {props.area.ttl}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Stations: {props.area.email}
+                                Rental Url Android: {props.area.rental_apps.android.store_uri}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Rental Url Android: {props.area.email}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Rental Url iOS: {props.area.email}
+                                Rental Url iOS: {props.area.rental_apps.ios.store_uri}
                             </Typography>
                         </Grid>
 

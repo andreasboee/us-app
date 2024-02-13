@@ -2,21 +2,26 @@ import { gbfsArea } from "../models/gbfsArea";
 import axios from 'axios';
 
 interface ResponseStructure {
-    system_id: string,
-    language: number,
-    name: string,
-    operator: string,
-    timezone: string,
-    phone_number: string,
-    email: string,
-    rental_apps: {
-        android: {
-            discovery_uri: string,
-            store_uri: string
-        },
-        ios: {
-            discovery_uri: string,
-            store_uri: string
+    last_updated: number,
+    ttl: number,
+    version: string,
+    data: {
+        system_id: string,
+        language: string,
+        name: string,
+        operator: string,
+        timezone: string,
+        phone_number: string,
+        email: string,
+        rental_apps: {
+            android: {
+                discovery_uri: string,
+                store_uri: string
+            },
+            ios: {
+                discovery_uri: string,
+                store_uri: string
+            }
         }
     }
 
@@ -28,7 +33,7 @@ export default async function getSystemInformation(area: gbfsArea) {
             console.error(err)
             return null
         });
-    console.log(result?.name)
+    console.log(result?.data.operator)
     return result
 
 }
