@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import MapContainer from "../components/map/mapView";
-import { Grid, Select, SelectChangeEvent } from "@mui/material";
+import { Button, Grid, Select, SelectChangeEvent } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -10,12 +10,16 @@ import FormControl from '@mui/material/FormControl';
 import { BergenArea } from "../constants/bergenArea";
 import { TrondheimArea } from "../constants/trondheimArea";
 import { OsloArea } from "../constants/osloArea";
+import { MilanoArea } from "../constants/milanoArea";
 import getStationsOfArea from "../api/getStationsOfArea";
 import { gbfsArea } from "../models/gbfsArea";
+import getAreaInformation from "../api/getStationsOfArea";
+import BookingDialog from "../components/areaInformationPopup";
 
 
 export default function MapScreen() {
-    const [area, setArea] = useState<gbfsArea>()
+    const [area, setArea] = useState<gbfsArea>(OsloArea)
+    const [openDialog, setOpenDialog] = useState(false)
 
     function handleChangeArea(area: gbfsArea) {
         console.log(area)
@@ -24,41 +28,61 @@ export default function MapScreen() {
 
     }
 
-    const areas = [BergenArea, OsloArea, TrondheimArea]
+    const areas = [BergenArea, OsloArea, TrondheimArea, MilanoArea]
 
     const handleChange = (event: SelectChangeEvent<gbfsArea>) => {
         handleChangeArea(event.target.value as gbfsArea);
     };
+
+    const handleShowAreaInformation = () => {
+        getAreaInformation(area)
+        setOpenDialog(true)
+    }
+
+    const handleClose = () => {
+        setOpenDialog(false)
+    }
 
 
     return (
         <>
             <Grid container direction="column" margin={2} >
                 <Grid container direction="row" justifyContent="flex-end">
+
                     <Grid item xs={2} margin={4}>
+
                         <FormControl fullWidth style={{ alignSelf: "stretch" }}>
                             <InputLabel id="demo-simple-select-label">Area</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={area}
+                                defaultValue={area}
                                 label="No selected area"
                                 onChange={handleChange}
                             >
-                                {Object.keys(areas).length
-                                    ? areas.map((mItem) => (
-                                        <MenuItem key={mItem.key}>
-                                            {mItem.areaName}
+                                {areas.map(area => {
+                                    return (
+                                        <MenuItem key={area.key} value={area.areaName}>
+                                            {area.areaName}
                                         </MenuItem>
-                                    ))
-                                    : null}
+                                    )
+                                })}
 
                             </Select>
                         </FormControl>
                     </Grid>
+                    <Grid item xs={2} margin={4}>
+                        <Button variant="contained" style={{ alignSelf: "stretch" }} onClick={handleShowAreaInformation}>See area info</Button>
+                    </Grid>
 
                 </Grid>
-                <MapContainer />
+                <BookingDialog
+                    handleClose={handleClose}
+                    open={openDialog} area={area}
+                />
+                <MapContainer
+                    {...area} />
             </Grid>
 
         </>
