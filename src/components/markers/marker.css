@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+}
+
+.marker {
+    background: cyan;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    background: "cyan";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 5px;
+}
+
+img {
+    width: 100%;
+}
+
+.test {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -100%);
+    width: 300px;
+    display: none;
+}
+
+.marker:hover .test {
+    display: block;
+}
