@@ -9,8 +9,8 @@ export const MilanoArea: gbfsArea = {
     identifier: "IDENTIFIER",
     key: "3",
     pos: {
-        lat: 59.92259870038957,
-        lng: 10.748226613489681
+        lat: 45.468001526736174,
+        lng: 9.187342216048727
     },
     zoom: 12,
     operator: "",

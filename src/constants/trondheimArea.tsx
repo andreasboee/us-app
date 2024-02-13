@@ -9,10 +9,10 @@ export const TrondheimArea: gbfsArea = {
     identifier: "IDENTIFIER",
     key: "0",
     pos: {
-        lat: 59.92259870038957,
-        lng: 10.748226613489681
+        lat: 63.4296802265213,
+        lng: 10.393712061145413
     },
-    zoom: 12,
+    zoom: 14,
     operator: "",
     phoneNumber: "",
     email: ""

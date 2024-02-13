@@ -5,10 +5,8 @@ import GoogleMapReact from "google-map-react";
 
 
 
-export default function MapView(area: gbfsArea) {
+export default function MapView(area: Readonly<gbfsArea>) {
     const mapRef = useRef()
-    // const [bounds, setBounds] = useState(null)
-    // const [zoom, setZoom] = useState(area.zoom)
 
     const mapConf = {
         center: {
@@ -18,44 +16,11 @@ export default function MapView(area: gbfsArea) {
         zoom: area.zoom,
     }
     const maxZoom = 20
-    // const points =
-    //     Carts &&
-    //     Object.keys(Carts).length &&
-    //     Object.keys(Carts).map((key, index) => {
-    //         const cart = Carts[key]
-    //         const { boardId } = cart
-    //         if (cart.LOC === undefined)
-    //             return {
-    //                 cartDocId: key,
-    //             }
-    //         return {
-    //             type: "Feature",
-    //             properties: {
-    //                 cluster: false,
-    //                 cartId: boardId,
-    //                 cartDocId: key,
-    //                 category: "vehicles",
-    //             },
-    //             geometry: {
-    //                 type: "Point",
-    //                 coordinates: [cart.LOC.longitude, cart.LOC.latitude],
-    //             },
-    //         }
-    //     })
-    // const { clusters, supercluster } = useSupercluster({
-    //     points: points ?? [],
-    //     bounds,
-    //     zoom,
-    //     options: {
-    //         radius: 500,
-    //         maxZoom,
-    //     },
-    // })
 
     return (
         <div>
-
             <GoogleMapReact
+                bootstrapURLKeys={{ "key": "AIzaSyDvw2J0bsXCGiodf8aT4rQxbKoWTOmCwGA" }}
                 defaultCenter={mapConf.center}
                 defaultZoom={mapConf.zoom}
                 options={(map) => ({
@@ -64,6 +29,7 @@ export default function MapView(area: gbfsArea) {
                     zoomControl: false,
                     maxZoom,
                 })}
+                style={{ height: "100%", width: "100vw" }}
                 yesIWantToUseGoogleMapApiInternals
                 onGoogleApiLoaded={({ map }) => {
                     mapRef.current = map
