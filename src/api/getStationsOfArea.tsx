@@ -1,7 +1,7 @@
 import { gbfsArea } from "../models/gbfsArea";
 import axios from 'axios';
 
-interface Station {
+export interface Station {
     address: string,
     capacity: number,
     cross_street: string,

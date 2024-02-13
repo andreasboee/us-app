@@ -1,7 +1,7 @@
 import { gbfsArea } from "../models/gbfsArea";
 import axios from 'axios';
 
-interface ResponseStructure {
+export interface StationResponseStructure {
     last_updated: string,
     data: {
         stations: [
@@ -18,7 +18,7 @@ interface ResponseStructure {
 
 export default async function getStationStatus(area: gbfsArea) {
 
-    const result = await axios.get(area.baseUrl + area.stationStatusUrl).then(res => res.data as ResponseStructure)
+    const result = await axios.get(area.baseUrl + area.stationStatusUrl).then(res => res.data as StationResponseStructure)
         .catch((err: any) => {
             console.error(err)
             return null
