@@ -68,21 +68,21 @@ export default function MapScreen() {
 
 
     return (
-        <div style={{ height: "100vh", width: "100vw" }}>
-            <Box style={{ position: "absolute", top: 0, right: 0, width: "500px", borderRadius: "20px", zIndex: 1, backgroundColor: "white" }}>
+        <div style={{ height: "90vh", width: "90vw" }}>
+            <Box style={{ position: "absolute", top: 5, right: 5, width: "700px", borderRadius: "20px", zIndex: 1, backgroundColor: "#a9e6c2" }}>
                 <Grid container
                     direction="row" alignItems={"center"} justifyContent={"center"}>
                     <Grid item xs={8}>
-                        <FormControl fullWidth style={{ alignSelf: "stretch" }}>
+                        <FormControl fullWidth style={{ alignSelf: "stretch", backgroundColor: "#7d89f5" }}>
                             <InputLabel id="demo-simple-select-label">Area</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={area}
-                                defaultValue={area}
-                                label="No selected area"
+                                label={area.areaName}
                                 onChange={handleChange}
                             >
+
                                 {areas.map(area => {
                                     return (
                                         <MenuItem key={area.key} value={area.areaName}>
@@ -94,8 +94,8 @@ export default function MapScreen() {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={2}>
-                        <Button variant="contained" style={{ alignSelf: "stretch" }} onClick={handleShowAreaInformation}>See
+                    <Grid item xs={2} margin={2}>
+                        <Button variant="contained" onClick={handleShowAreaInformation}>See
                             area info</Button>
                     </Grid>
 
