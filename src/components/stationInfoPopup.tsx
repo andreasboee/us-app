@@ -12,14 +12,24 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
 
 export default function StationInfoPupup(props: { handleClose: () => void; open: boolean, station?: Station }) {
 
+    // interface VehicleType {
+    //     vehicle_type_id: string,
+    //     count: number
+    // }
 
-
-    // const name = useRef("")
-    // const tlf = useRef("")
-    // const note = useRef("")
-
-
-
+    // function GetVehicleTypes() {
+    //     const types: VehicleType[] = []
+    //     props.station?.vehicle_types_available.forEach((type: VehicleType) => types.push(type));
+    //     types.forEach((element) => {
+    //         return (
+    //             <div>
+    //                 <Typography>
+    //                     {element.vehicle_type_id} ":" {element.count}
+    //                 </Typography>
+    //             </div>
+    //         )
+    //     })
+    // }
 
 
 
@@ -107,6 +117,8 @@ export default function StationInfoPupup(props: { handleClose: () => void; open:
                             <Typography variant="body2" color="#000">
                                 Available Bikes: {props.station?.num_vehicles_available}
                             </Typography>
+
+
                             <Typography variant="body2" color="#000">
                                 Station ID: {props.station?.station_id}
                             </Typography>
@@ -122,6 +134,7 @@ export default function StationInfoPupup(props: { handleClose: () => void; open:
                             <Typography variant="body2" color="#000">
                                 Station Coordinates: {props.station?.station_area.coordinates}
                             </Typography>
+
 
 
                         </Grid>

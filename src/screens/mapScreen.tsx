@@ -30,11 +30,13 @@ export default function MapScreen() {
 
     const [stations, setStations] = useState<Station[]>()
 
-    function handleChangeArea(area: gbfsArea) {
-        setArea(area)
-        updateArea(area)
-        updateStations(area)
-        getAreaInformation(area)
+    async function handleChangeArea(area: gbfsArea) {
+        setIsLoaded(false)
+        await setArea(area)
+        await updateArea(area)
+        await updateStations(area)
+        await getAreaInformation(area)
+        setIsLoaded(true)
     }
 
     async function updateStations(newArea: gbfsArea) {
@@ -43,7 +45,9 @@ export default function MapScreen() {
         if (res?.data.stations.length) {
             newArray = (res.data.stations)
         }
-        getStationInfo(newArray)
+
+        await getStationInfo(newArray)
+
     }
 
     async function updateArea(newArea: gbfsArea) {
@@ -63,24 +67,32 @@ export default function MapScreen() {
 
             let newArray: Station[] = inputArray
             const res = await getStationStatus(area)
-            if (res?.data.stations.length) {
-                newArray?.forEach((station) => {
-                    const id = station.station_id
 
+            if (res?.data.stations.length) {
+                inputArray?.forEach((station) => {
+                    console.log(newArray[0].num_vehicles_available)
+                    const id = station.station_id
                     const correspondingStationData = res.data.stations.find((i) => i.station_id === id)
                     if (correspondingStationData) {
-                        station.num_vehicles_available = correspondingStationData.num_docks_available
+                        station.num_vehicles_available = correspondingStationData.num_bikes_available
                         station.num_docks_available = correspondingStationData.num_docks_available
                         station.is_renting = correspondingStationData.is_renting
                         station.is_returning = correspondingStationData.is_returning
                         station.vehicle_types_available = correspondingStationData.vehicle_types_available
-                        station.last_reported = correspondingStationData.num_docks_available
+                        station.last_reported = correspondingStationData.last_reported
+
+                        console.log(station.num_docks_available)
+
                     }
+                    newArray = inputArray
                 }
                 )
             }
+
             setStations(newArray)
-            setIsLoaded(true)
+
+
+
         }
     }
 
@@ -88,7 +100,7 @@ export default function MapScreen() {
     const areas = [BergenArea, OsloArea, TrondheimArea, MilanoArea]
 
     const handleChange = (event: SelectChangeEvent<gbfsArea>) => {
-        setIsLoaded(false)
+
         console.log(event.target.value)
         const area = event.target.value;
         const areaObject = areas.find(areaObject => areaObject.areaName === area)
@@ -161,21 +173,27 @@ export default function MapScreen() {
                             Area info</Button>
                     </Grid>
 
+
                     <AreaInformationPopup
                         handleClose={handleClose}
                         open={openDialog} area={area}
                     />
 
 
+
                 </Grid>
+
             </Box>
+            {!isLoaded &&
+                <Box style={{ position: "absolute", top: 50, left: 50, width: "700px", borderRadius: 6, zIndex: 1, }}>
+                    <Typography color="#222222">
+                        Please select an area to show stations</Typography>
+                </Box>}
             {isLoaded &&
                 <MapContainer area={area}
                     stations={stations || [] as Station[]}
                 />}
-            {!isLoaded &&
-                <Typography>
-                    Please select an area to show stations</Typography>}
+
         </div >
     )
 }
