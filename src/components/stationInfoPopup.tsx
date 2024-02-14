@@ -105,7 +105,7 @@ export default function StationInfoPupup(props: { handleClose: () => void; open:
                                 Capacity: {props.station?.capacity}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Available Bikes: ""
+                                Available Bikes: {props.station?.num_vehicles_available}
                             </Typography>
                             <Typography variant="body2" color="#000">
                                 Station ID: {props.station?.station_id}

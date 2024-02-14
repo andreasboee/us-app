@@ -1,5 +1,6 @@
 import React from "react"
 import { Box, Typography, styled } from "@mui/material"
+import { Station } from "../../models/stations"
 
 const CLUSTER_SIZE = 50
 
@@ -27,13 +28,13 @@ const Marker = styled("div")(() => ({
 }))
 
 
-const StationMarker = ({ onClick, capacity }: { onClick: any, capacity: number }) => (
+const StationMarker = ({ onClick, station }: { onClick: any, station: Station }) => (
 
     <Marker onClick={onClick}>
         <div>
             <Box >
                 <Typography color="#fff" fontSize={"16pt"} fontWeight={600} >
-                    {capacity}
+                    {station.capacity}
                 </Typography>
             </Box>
         </div>

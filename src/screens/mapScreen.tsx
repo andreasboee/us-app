@@ -24,6 +24,8 @@ import getStationStatus from "../api/getStationStatus";
 export default function MapScreen() {
     const [area, setArea] = useState<gbfsArea>(OsloArea)
     const [openDialog, setOpenDialog] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false)
+
 
 
     const [stations, setStations] = useState<Station[]>()
@@ -78,6 +80,7 @@ export default function MapScreen() {
                 )
             }
             setStations(newArray)
+            setIsLoaded(true)
         }
     }
 
@@ -85,6 +88,7 @@ export default function MapScreen() {
     const areas = [BergenArea, OsloArea, TrondheimArea, MilanoArea]
 
     const handleChange = (event: SelectChangeEvent<gbfsArea>) => {
+        setIsLoaded(false)
         console.log(event.target.value)
         const area = event.target.value;
         const areaObject = areas.find(areaObject => areaObject.areaName === area)
@@ -165,9 +169,13 @@ export default function MapScreen() {
 
                 </Grid>
             </Box>
-            <MapContainer area={area}
-                stations={stations || [] as Station[]}
-            />
+            {isLoaded &&
+                <MapContainer area={area}
+                    stations={stations || [] as Station[]}
+                />}
+            {!isLoaded &&
+                <Typography>
+                    Please select an area to show stations</Typography>}
         </div >
     )
 }
