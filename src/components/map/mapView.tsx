@@ -31,7 +31,7 @@ export default function MapView(props: { area: gbfsArea; stations: Station[]; })
 
 
     const handleOpenStationInformation = (station: Station) => {
-        console.log(station.address)
+
         setSelectedStation(station)
         setOpenStationDialog(true)
     };
@@ -60,12 +60,12 @@ export default function MapView(props: { area: gbfsArea; stations: Station[]; })
                     station={selectedStation} />}
             <GoogleMapReact
                 bootstrapURLKeys={{ "key": "AIzaSyDvw2J0bsXCGiodf8aT4rQxbKoWTOmCwGA" }}
-                defaultCenter={mapConf.center}
-                defaultZoom={mapConf.zoom}
+                center={mapConf.center}
+                zoom={mapConf.zoom}
                 options={(map) => ({
                     mapTypeId: map.MapTypeId.HYBRID,
                     fullscreenControl: false,
-                    zoomControl: false,
+                    zoomControl: true,
                     maxZoom,
                 })}
                 style={{ height: "100%", width: "100vw" }}
@@ -81,6 +81,7 @@ export default function MapView(props: { area: gbfsArea; stations: Station[]; })
                     stations.map((station) => {
                         const latitude = station.lat
                         const longitude = station.lon
+
                         return (
                             <Marker
 
@@ -88,26 +89,12 @@ export default function MapView(props: { area: gbfsArea; stations: Station[]; })
                                 lat={latitude}
                                 lng={longitude}>
                                 {station.capacity}
-
                                 <StationMarker station={station} onClick={() => { handleOpenStationInformation(station) }} />
                             </Marker>
                         )
                     })}
 
-                {/* {stations.map(station => {
-                    console.log("has length")
-                    const latitude = station.lat
-                    const longitude = station.lon
-                    return (
-                        <Marker
-                            key={`station-${station.station_id}`}
-                            lat={latitude}
-                            lng={longitude}>
-                            {station.capacity}
-                            <StationMarker onClick={handleOpenStationInformation} capacity={station.capacity} />
-                        </Marker>
-                    )
-                })} */}
+
             </GoogleMapReact>
         </div >
     )

@@ -32,7 +32,6 @@ export default async function getStationStatus(area: gbfsArea) {
             return null
         });
 
-    // console.log(result?.last_updated)
     return result
 
 }

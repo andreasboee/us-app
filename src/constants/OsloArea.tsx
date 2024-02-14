@@ -12,7 +12,7 @@ export const OsloArea: gbfsArea = {
         lat: 59.92259870038957,
         lng: 10.748226613489681
     },
-    zoom: 12,
+    zoom: 13,
     operator: "",
     phone_number: "",
     email: "",

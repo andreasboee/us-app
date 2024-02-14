@@ -33,6 +33,7 @@ export default function StationInfoPupup(props: { handleClose: () => void; open:
 
 
 
+
     return (
         <div>
 
@@ -131,9 +132,12 @@ export default function StationInfoPupup(props: { handleClose: () => void; open:
                             <Typography variant="body2" color="#000">
                                 Rental URI Android: {props.station?.rental_uris.ios}
                             </Typography>
+
                             <Typography variant="body2" color="#000">
-                                Station Coordinates: {props.station?.station_area.coordinates}
+                                Lat: {props.station?.lat},
+                                Lng: {props.station?.lat}
                             </Typography>
+
 
 
 

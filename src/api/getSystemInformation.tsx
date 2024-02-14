@@ -33,7 +33,7 @@ export default async function getSystemInformation(area: gbfsArea) {
             console.error(err)
             return null
         });
-    console.log(result?.data.operator)
+
     return result
 
 }

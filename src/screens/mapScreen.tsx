@@ -1,6 +1,6 @@
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MapContainer from "../components/map/mapView";
 import { Button, Grid, Box, Select, SelectChangeEvent, Typography } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
@@ -26,16 +26,23 @@ export default function MapScreen() {
     const [openDialog, setOpenDialog] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false)
 
+    useEffect(() => {
 
+        updateStations(area)
+
+        setIsLoaded(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const [stations, setStations] = useState<Station[]>()
 
     async function handleChangeArea(area: gbfsArea) {
-        setIsLoaded(false)
-        await setArea(area)
+
+        setArea(area)
         await updateArea(area)
-        await updateStations(area)
         await getAreaInformation(area)
+        setIsLoaded(false)
+        await updateStations(area)
         setIsLoaded(true)
     }
 
@@ -70,7 +77,6 @@ export default function MapScreen() {
 
             if (res?.data.stations.length) {
                 inputArray?.forEach((station) => {
-                    console.log(newArray[0].num_vehicles_available)
                     const id = station.station_id
                     const correspondingStationData = res.data.stations.find((i) => i.station_id === id)
                     if (correspondingStationData) {
@@ -97,11 +103,15 @@ export default function MapScreen() {
     }
 
 
-    const areas = [BergenArea, OsloArea, TrondheimArea, MilanoArea]
+    const areas = [
+        BergenArea,
+        OsloArea,
+        TrondheimArea,
+        MilanoArea]
 
     const handleChange = (event: SelectChangeEvent<gbfsArea>) => {
 
-        console.log(event.target.value)
+
         const area = event.target.value;
         const areaObject = areas.find(areaObject => areaObject.areaName === area)
 
@@ -144,7 +154,7 @@ export default function MapScreen() {
                                     id="demo-simple-select"
                                     value={area}
                                     defaultValue={area}
-                                    label={area.areaName}
+                                    label="Area"
                                     onChange={handleChange}
 
                                 >
@@ -172,17 +182,11 @@ export default function MapScreen() {
                         }} variant="contained" onClick={handleShowAreaInformation}>
                             Area info</Button>
                     </Grid>
-
-
                     <AreaInformationPopup
                         handleClose={handleClose}
                         open={openDialog} area={area}
                     />
-
-
-
                 </Grid>
-
             </Box>
             {!isLoaded &&
                 <Box style={{ position: "absolute", top: 50, left: 50, width: "700px", borderRadius: 6, zIndex: 1, }}>
