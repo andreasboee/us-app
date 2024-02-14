@@ -1,24 +1,8 @@
 import { gbfsArea } from "../models/gbfsArea";
 import axios from 'axios';
+import { Station } from "../models/stations";
 
-export interface Station {
-    address: string,
-    capacity: number,
-    cross_street: string,
-    is_virtual_station: boolean,
-    lat: number,
-    lon: number,
-    name: string,
-    rental_uris: {
-        android: string,
-        ios: string
-    }
-    station_area: {
-        type: string,
-        coordinates: [[number, number]]
-    }
-    station_id: string
-}
+
 
 interface ResponseStructure {
     last_updated: number,

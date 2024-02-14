@@ -2,23 +2,24 @@ import React from "react"
 import Dialog from "@mui/material/Dialog"
 import { DialogActions, DialogContent, Grid, Typography } from "@mui/material"
 import styled from "@emotion/styled"
-import { gbfsArea } from "../models/gbfsArea"
 import { DialogTitle } from "./dialogTitle"
+import { Station } from "../models/stations"
 
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
     minWidth: "580px",
 }))
 
-export default function AreaInformationPopup(props: { handleClose: () => void; open: boolean, area: gbfsArea }) {
+export default function StationInfoPupup(props: { handleClose: () => void; open: boolean, station?: Station }) {
+
+
 
     // const name = useRef("")
     // const tlf = useRef("")
     // const note = useRef("")
 
-    const handleClose = () => {
-        props.handleClose()
-    }
+
+
 
 
 
@@ -32,15 +33,15 @@ export default function AreaInformationPopup(props: { handleClose: () => void; o
                     opacity: 0.9,
                     maxWidth: "100vw",
                     minWidth: "560px",
-
+                    padding: "10px",
                     border: "1px",
                 }}
-                onClose={handleClose}
+                onClose={props.handleClose}
                 aria-labelledby="customized-dialog-title"
                 open={props.open}
 
             >
-                <DialogTitle id="customized-dialog-title" onClose={handleClose} {...props}>
+                <DialogTitle id="customized-dialog-title" onClose={props.handleClose} {...props}>
                     <Grid
                         container
                         alignItems={"center"}
@@ -52,7 +53,7 @@ export default function AreaInformationPopup(props: { handleClose: () => void; o
                     >
                         <Grid item xs>
                             <Typography variant="inherit" align="left">
-                                {props?.area.areaName} GBFS System Information
+                                {props?.station?.name} Station Information
                             </Typography>
                         </Grid>
 
@@ -96,27 +97,33 @@ export default function AreaInformationPopup(props: { handleClose: () => void; o
                         }}
                     >
                         <Grid container direction="column" spacing={2}>
+
                             <Typography variant="body2" color="#000">
-                                System Name: {props.area.areaName}
+                                Address: {props.station?.address}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Operator: {props.area.operator}
+                                Capacity: {props.station?.capacity}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Phone Number: {props.area.phone_number}
+                                Available Bikes: ""
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Last updated: {props.area.last_updated}
+                                Station ID: {props.station?.station_id}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                TTL: {props.area.ttl}
+                                Cross Street: {props.station?.cross_street}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Rental Url Android: {props.area.rental_apps.android.store_uri}
+                                Rental URI Android: {props.station?.rental_uris.android}
                             </Typography>
                             <Typography variant="body2" color="#000">
-                                Rental Url iOS: {props.area.rental_apps.ios.store_uri}
+                                Rental URI Android: {props.station?.rental_uris.ios}
                             </Typography>
+                            <Typography variant="body2" color="#000">
+                                Station Coordinates: {props.station?.station_area.coordinates}
+                            </Typography>
+
+
                         </Grid>
 
 

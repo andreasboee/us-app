@@ -5,13 +5,21 @@ export interface StationResponseStructure {
     last_updated: string,
     data: {
         stations: [
-            is_installed: number,
-            is_renting: number,
-            num_bikes_available: number,
-            num_docks_available: number,
-            last_reported: number,
-            is_returning: number,
-            station_id: number
+            {
+                is_installed: boolean,
+                is_renting: boolean,
+                num_bikes_available: number,
+                num_docks_available: number,
+                last_reported: number,
+                is_returning: boolean,
+                station_id: string,
+                vehicle_types_available: [
+                    {
+                        vehicle_type_id: string,
+                        count: number
+                    }
+                ]
+            }
         ]
     }
 }
@@ -23,6 +31,7 @@ export default async function getStationStatus(area: gbfsArea) {
             console.error(err)
             return null
         });
+
     // console.log(result?.last_updated)
     return result
 

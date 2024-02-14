@@ -1,7 +1,7 @@
 import React from "react"
-import { Typography, styled } from "@mui/material"
+import { Box, Typography, styled } from "@mui/material"
 
-const CLUSTER_SIZE = 80
+const CLUSTER_SIZE = 50
 
 const Marker = styled("div")(() => ({
     position: "absolute",
@@ -10,13 +10,13 @@ const Marker = styled("div")(() => ({
     height: CLUSTER_SIZE + "px",
     width: CLUSTER_SIZE + "px",
     textAlign: "center",
-    backgroundColor: "#",
+    backgroundColor: "#897df5",
     borderRadius: CLUSTER_SIZE + "px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
-    border: "5px solid",
+    border: "2px solid",
     borderColor: "#897df5",
     boxShadow:
         `inset 0 0 0 2px #237729,` +
@@ -27,13 +27,15 @@ const Marker = styled("div")(() => ({
 }))
 
 
-const StationMarker = ({ onClick }: { onClick: any }) => (
+const StationMarker = ({ onClick, capacity }: { onClick: any, capacity: number }) => (
 
     <Marker onClick={onClick}>
         <div>
-            <Typography color="#DCDCDC" fontSize={"8pt"} fontWeight={600}>
-                Bicycles
-            </Typography>
+            <Box >
+                <Typography color="#fff" fontSize={"16pt"} fontWeight={600} >
+                    {capacity}
+                </Typography>
+            </Box>
         </div>
     </Marker>
 )

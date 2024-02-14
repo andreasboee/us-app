@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import MapContainer from "../components/map/mapView";
-import { Button, Grid, Box, Select, SelectChangeEvent } from "@mui/material";
+import { Button, Grid, Box, Select, SelectChangeEvent, Typography } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -14,21 +14,37 @@ import { MilanoArea } from "../constants/milanoArea";
 import getStationsOfArea from "../api/getStationsOfArea";
 import { gbfsArea } from "../models/gbfsArea";
 import getAreaInformation from "../api/getStationsOfArea";
-import BookingDialog from "../components/areaInformationPopup";
+import AreaInformationPopup from "../components/areaInformationPopup";
 import getSystemInformation from "../api/getSystemInformation";
 import { OsloArea } from "../constants/osloArea";
+import { Station } from "../models/stations";
+import getStationStatus from "../api/getStationStatus";
 
 
 export default function MapScreen() {
     const [area, setArea] = useState<gbfsArea>(OsloArea)
     const [openDialog, setOpenDialog] = useState(false)
 
+
+    const [stations, setStations] = useState<Station[]>()
+
     function handleChangeArea(area: gbfsArea) {
         setArea(area)
         updateArea(area)
-        getStationsOfArea(area)
+        updateStations(area)
         getAreaInformation(area)
+    }
 
+    async function updateStations(newArea: gbfsArea) {
+        let newArray: Station[] = []
+        const res = await getStationsOfArea(newArea)
+        if (res?.data.stations.length) {
+            newArray = (res.data.stations)
+        }
+
+        setStations(newArray)
+
+        getStationInfo(newArea)
     }
 
     async function updateArea(newArea: gbfsArea) {
@@ -37,11 +53,41 @@ export default function MapScreen() {
             setArea({
                 ...newArea, system_id: res.data.system_id, language: res.data.language,
                 operator: res.data.operator, timezone: res.data.timezone, phone_number: res.data.phone_number,
-                rental_apps: res.data.rental_apps
+                rental_apps: res.data.rental_apps, last_updated: res.last_updated, ttl: res.ttl
             });
         }
 
     }
+
+    async function getStationInfo(area: gbfsArea) {
+        if (stations?.length) {
+            let newArray = stations
+            const res = await getStationStatus(area)
+            if (res?.data.stations.length) {
+
+                newArray?.forEach((station) => {
+
+                    const id = station.station_id
+
+                    const correspondingStationData = res.data.stations.find((i) => i.station_id === id)
+                    if (correspondingStationData) {
+                        station.num_vehicles_available = correspondingStationData.num_docks_available
+                        station.num_docks_available = correspondingStationData.num_docks_available
+                        station.is_renting = correspondingStationData.is_renting
+                        station.is_returning = correspondingStationData.is_returning
+                        station.vehicle_types_available = correspondingStationData.vehicle_types_available
+                        station.last_reported = correspondingStationData.num_docks_available
+                    }
+                }
+
+
+                )
+            }
+            console.log(newArray[0].num_docks_available)
+            setStations(newArray)
+        }
+    }
+
 
     const areas = [BergenArea, OsloArea, TrondheimArea, MilanoArea]
 
@@ -67,47 +113,67 @@ export default function MapScreen() {
     }
 
 
+
+
     return (
         <div style={{ height: "90vh", width: "90vw" }}>
-            <Box style={{ position: "absolute", top: 5, right: 5, width: "700px", borderRadius: "20px", zIndex: 1, backgroundColor: "#a9e6c2" }}>
+            <Box style={{ position: "absolute", top: 5, right: 5, width: "700px", borderRadius: 6, zIndex: 1, backgroundColor: "#a9e6c2" }}>
                 <Grid container
                     direction="row" alignItems={"center"} justifyContent={"center"}>
                     <Grid item xs={8}>
-                        <FormControl fullWidth style={{ alignSelf: "stretch", backgroundColor: "#7d89f5" }}>
-                            <InputLabel id="demo-simple-select-label">Area</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={area}
-                                label={area.areaName}
-                                onChange={handleChange}
-                            >
-
-                                {areas.map(area => {
-                                    return (
-                                        <MenuItem key={area.key} value={area.areaName}>
+                        <Box style={{}}>
+                            <FormControl fullWidth style={{ alignSelf: "stretch", backgroundColor: "#7d89f5", borderRadius: 6 }}>
+                                <InputLabel id="demo-simple-select-label">
+                                    <Box marginLeft={2} marginTop={4} >
+                                        <Typography align="left" variant="h5" color="#fff">
                                             {area.areaName}
-                                        </MenuItem>
-                                    )
-                                })}
+                                        </Typography>
+                                    </Box>
+                                </InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={area}
+                                    defaultValue={area}
+                                    label={area.areaName}
+                                    onChange={handleChange}
 
-                            </Select>
-                        </FormControl>
+                                >
+
+                                    {areas.map(area => {
+                                        return (
+                                            <MenuItem key={area.key} value={area.areaName}>
+                                                {area.areaName}
+                                            </MenuItem>
+                                        )
+                                    })}
+
+                                </Select>
+                            </FormControl>
+                        </Box>
                     </Grid>
                     <Grid item xs={2} margin={2}>
-                        <Button variant="contained" onClick={handleShowAreaInformation}>See
-                            area info</Button>
+                        <Button style={{
+                            borderRadius: 6,
+                            backgroundColor: "#ffc200",
+                            padding: "16px 16px",
+                            fontSize: "14px",
+                            width: "120px"
+
+                        }} variant="contained" onClick={handleShowAreaInformation}>
+                            Area info</Button>
                     </Grid>
 
-                    <BookingDialog
+                    <AreaInformationPopup
                         handleClose={handleClose}
                         open={openDialog} area={area}
                     />
 
+
                 </Grid>
             </Box>
-            <MapContainer
-                {...area} />
-        </div>
+            <MapContainer {...area}{...stations}
+            />
+        </div >
     )
 }
