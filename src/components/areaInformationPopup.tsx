@@ -28,8 +28,8 @@ export default function AreaInformationPopup(props: { handleClose: () => void; o
             <CustomDialog
                 style={{
                     zIndex: 10,
-                    backgroundColor: "#a9e6c2",
-                    opacity: 0.9,
+                    backgroundColor: "#DCDCDC",
+                    opacity: 0.95,
                     maxWidth: "100vw",
                     minWidth: "560px",
 

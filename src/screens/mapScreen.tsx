@@ -41,10 +41,7 @@ export default function MapScreen() {
         if (res?.data.stations.length) {
             newArray = (res.data.stations)
         }
-
-        setStations(newArray)
-
-        getStationInfo(newArea)
+        getStationInfo(newArray)
     }
 
     async function updateArea(newArea: gbfsArea) {
@@ -59,14 +56,13 @@ export default function MapScreen() {
 
     }
 
-    async function getStationInfo(area: gbfsArea) {
-        if (stations?.length) {
-            let newArray = stations
+    async function getStationInfo(inputArray: Station[]) {
+        if (inputArray?.length) {
+
+            let newArray: Station[] = inputArray
             const res = await getStationStatus(area)
             if (res?.data.stations.length) {
-
                 newArray?.forEach((station) => {
-
                     const id = station.station_id
 
                     const correspondingStationData = res.data.stations.find((i) => i.station_id === id)
@@ -79,11 +75,8 @@ export default function MapScreen() {
                         station.last_reported = correspondingStationData.num_docks_available
                     }
                 }
-
-
                 )
             }
-            console.log(newArray[0].num_docks_available)
             setStations(newArray)
         }
     }
@@ -117,15 +110,15 @@ export default function MapScreen() {
 
     return (
         <div style={{ height: "90vh", width: "90vw" }}>
-            <Box style={{ position: "absolute", top: 5, right: 5, width: "700px", borderRadius: 6, zIndex: 1, backgroundColor: "#a9e6c2" }}>
+            <Box style={{ position: "absolute", top: 5, right: 5, width: "700px", borderRadius: 6, zIndex: 1, backgroundColor: "#333333" }}>
                 <Grid container
                     direction="row" alignItems={"center"} justifyContent={"center"}>
                     <Grid item xs={8}>
                         <Box style={{}}>
-                            <FormControl fullWidth style={{ alignSelf: "stretch", backgroundColor: "#7d89f5", borderRadius: 6 }}>
+                            <FormControl fullWidth style={{ alignSelf: "stretch", backgroundColor: "#EEEEEE", opacity: 0.8, borderRadius: 6, border: "none" }}>
                                 <InputLabel id="demo-simple-select-label">
                                     <Box marginLeft={2} marginTop={4} >
-                                        <Typography align="left" variant="h5" color="#fff">
+                                        <Typography align="left" variant="h5" color="#222222">
                                             {area.areaName}
                                         </Typography>
                                     </Box>
@@ -155,7 +148,7 @@ export default function MapScreen() {
                     <Grid item xs={2} margin={2}>
                         <Button style={{
                             borderRadius: 6,
-                            backgroundColor: "#ffc200",
+                            backgroundColor: "#",
                             padding: "16px 16px",
                             fontSize: "14px",
                             width: "120px"
@@ -172,7 +165,8 @@ export default function MapScreen() {
 
                 </Grid>
             </Box>
-            <MapContainer {...area}{...stations}
+            <MapContainer area={area}
+                stations={stations || [] as Station[]}
             />
         </div >
     )

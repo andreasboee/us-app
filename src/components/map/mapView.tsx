@@ -1,29 +1,37 @@
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gbfsArea } from "../../models/gbfsArea";
 import GoogleMapReact from "google-map-react";
-import StationMarker from "../markers/stationMarker";
 import { Station } from "../../models/stations";
 import StationInfoPupup from "../stationInfoPopup";
-
+import StationMarker from "../markers/stationMarker";
 
 const Marker = ({ children, lat, lng }: { children: any, lat: number, lng: number }) => children
 
-export default function MapView(area: Readonly<gbfsArea>, stations: Station[]) {
+export default function MapView(props: { area: gbfsArea; stations: Station[]; }) {
     const [openStationDialog, setOpenStationDialog] = useState(false)
+    const mapRef = useRef<any>()
+
+    const { area, stations } = props
+
+
+    useEffect(() => {
+        console.log("stations", stations)
+    }, [stations])
+
+    useEffect(() => {
+        mapRef.current?.setCenter({ lat: area.pos.lat, lng: area.pos.lng })
+    }, [area]);
+
 
     function handleCloseStationInformation() {
-
         setOpenStationDialog(false)
-
     }
 
     function handleOpenStationInformation() {
         setOpenStationDialog(true)
-        console.log("2set to true")
-    }
 
-    const mapRef = useRef()
+    }
 
     const mapConf = {
         center: {
@@ -34,6 +42,19 @@ export default function MapView(area: Readonly<gbfsArea>, stations: Station[]) {
     }
     const maxZoom = 20
 
+    function DisplayMarkers({ onClick, capacity }: { onClick: any, capacity: number }) {
+        if (stations.length) {
+            return (
+                <Marker
+                    key={`station-1`}
+                    lat={stations[0].lat}
+                    lng={stations[0].lon}>
+
+                    <StationMarker onClick={handleOpenStationInformation} capacity={10} />
+                </Marker>)
+        }
+        return <div />
+    }
 
 
 
@@ -61,19 +82,19 @@ export default function MapView(area: Readonly<gbfsArea>, stations: Station[]) {
                     mapRef.current = map
                 }}
 
+
             >
+                <DisplayMarkers onClick={handleOpenStationInformation} capacity={20} />
                 <Marker
                     key={`station-1`}
-                    lat={59.91259870038957}
+                    lat={59.92}
                     lng={10.748226613489681}>
 
                     <StationMarker onClick={handleOpenStationInformation} capacity={10} />
                 </Marker>
 
-
-                {stations.length &&
-                    stations.map(station => {
-                        console.log("has length")
+                {/* {stations.length &&
+                    stations.map((station) => {
                         const latitude = station.lat
                         const longitude = station.lon
                         return (
@@ -85,7 +106,22 @@ export default function MapView(area: Readonly<gbfsArea>, stations: Station[]) {
                                 <StationMarker onClick={handleOpenStationInformation} capacity={station.capacity} />
                             </Marker>
                         )
-                    })}
+                    })} */}
+
+                {/* {stations.map(station => {
+                    console.log("has length")
+                    const latitude = station.lat
+                    const longitude = station.lon
+                    return (
+                        <Marker
+                            key={`station-${station.station_id}`}
+                            lat={latitude}
+                            lng={longitude}>
+                            {station.capacity}
+                            <StationMarker onClick={handleOpenStationInformation} capacity={station.capacity} />
+                        </Marker>
+                    )
+                })} */}
             </GoogleMapReact>
         </div >
     )

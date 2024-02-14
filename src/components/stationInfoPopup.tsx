@@ -29,8 +29,8 @@ export default function StationInfoPupup(props: { handleClose: () => void; open:
             <CustomDialog
                 style={{
                     zIndex: 10,
-                    backgroundColor: "#a9e6c2",
-                    opacity: 0.9,
+                    backgroundColor: "#DCDCDC",
+                    opacity: 0.95,
                     maxWidth: "100vw",
                     minWidth: "560px",
                     padding: "10px",
