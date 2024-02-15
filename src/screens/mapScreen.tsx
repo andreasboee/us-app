@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import MapContainer from "../components/map/mapView";
-import { Button, Grid, Box, Select, SelectChangeEvent, Typography } from "@mui/material";
+import { Button, Grid, Box, Select, SelectChangeEvent, Typography, CircularProgress } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -27,10 +27,14 @@ export default function MapScreen() {
     const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
+        async function fetchData() {
+            setIsLoaded(false)
+            await updateStations(area)
+            await getAreaInformation(area)
+            setIsLoaded(true)
+        }
 
-        updateStations(area)
-
-        setIsLoaded(true)
+        fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -53,7 +57,7 @@ export default function MapScreen() {
             newArray = (res.data.stations)
         }
 
-        await getStationInfo(newArray)
+        await getStationInfo(newArray, newArea)
 
     }
 
@@ -69,50 +73,53 @@ export default function MapScreen() {
 
     }
 
-    async function getStationInfo(inputArray: Station[]) {
+    async function getStationInfo(inputArray: Station[], newArea: gbfsArea) {
         if (inputArray?.length) {
 
             let newArray: Station[] = inputArray
-            const res = await getStationStatus(area)
-            if (res?.data.stations.length) {
-                newArray?.forEach((station) => {
-                    const id = station.station_id
-                    const correspondingStationData = res.data.stations.find((i) => i.station_id === id)
-                    let num_vehicles_available = 0
-                    let num_docks_available = 0
-                    let is_renting = false
-                    let is_returning = false
-                    let vehicle_types_available: [{ vehicle_type_id: string, count: number }] = [
-                        {
-                            vehicle_type_id: "",
-                            count: 0
+            await getStationStatus(newArea).then(res => {
+                if (res?.data.stations.length) {
+                    newArray?.forEach((station) => {
+                        const correspondingStationData = res.data.stations.find(function (i) {
+                            return i.station_id === station.station_id
+                        });
+                        let num_vehicles_available = 0
+                        let num_docks_available = 0
+                        let is_renting = false
+                        let is_returning = false
+                        let vehicle_types_available: [{ vehicle_type_id: string, count: number }] = [
+                            {
+                                vehicle_type_id: "",
+                                count: 0
+                            }
+                        ]
+                        let last_reported = 0
+                        if (correspondingStationData) {
+                            num_vehicles_available = correspondingStationData.num_bikes_available
+                            num_docks_available = correspondingStationData.num_docks_available
+                            is_renting = correspondingStationData.is_renting
+                            is_returning = correspondingStationData.is_returning
+                            vehicle_types_available = correspondingStationData.vehicle_types_available
+                            last_reported = correspondingStationData.last_reported
+
                         }
-                    ]
-                    let last_reported = 0
-                    if (correspondingStationData) {
-                        num_vehicles_available = correspondingStationData.num_bikes_available
-                        num_docks_available = correspondingStationData.num_docks_available
-                        is_renting = correspondingStationData.is_renting
-                        is_returning = correspondingStationData.is_returning
-                        vehicle_types_available = correspondingStationData.vehicle_types_available
-                        last_reported = correspondingStationData.last_reported
+                        station.num_vehicles_available = num_vehicles_available
+                        station.num_docks_available = num_docks_available
+                        station.is_renting = is_renting
+                        station.is_returning = is_returning
+                        station.vehicle_types_available = vehicle_types_available
+                        station.last_reported = last_reported
 
-                    }
-                    station.num_vehicles_available = num_vehicles_available
-                    station.num_docks_available = num_docks_available
-                    station.is_renting = is_renting
-                    station.is_returning = is_returning
-                    station.vehicle_types_available = vehicle_types_available
-                    station.last_reported = last_reported
-                    newArray = inputArray
-                });
+                        newArray = inputArray
+                    });
 
-            }
+                }
 
-            setStations(newArray)
+                setStations(newArray)
 
 
 
+            })
         }
     }
 
@@ -203,9 +210,10 @@ export default function MapScreen() {
                 </Grid>
             </Box>
             {!isLoaded &&
-                <Box style={{ position: "absolute", top: 50, left: 50, width: "700px", borderRadius: 6, zIndex: 1, }}>
-                    <Typography color="#222222">
-                        Please select an area to show stations</Typography>
+                <Box sx={{
+                    display: 'flex', alignItems: "center", justifyContent: "center", height: "100vh",
+                }}>
+                    <CircularProgress />
                 </Box>}
             {isLoaded &&
                 <MapContainer area={area}
