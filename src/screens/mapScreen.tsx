@@ -14,7 +14,7 @@ import { MilanoArea } from "../constants/milanoArea";
 import getStationsOfArea from "../api/getStationsOfArea";
 import { gbfsArea } from "../models/gbfsArea";
 import getAreaInformation from "../api/getStationsOfArea";
-import AreaInformationPopup from "../components/areaInformationPopup";
+import AreaInformationPopup from "../components/informationPopupElements/areaInformationPopup";
 import getSystemInformation from "../api/getSystemInformation";
 import { OsloArea } from "../constants/osloArea";
 import { Station } from "../models/stations";

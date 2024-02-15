@@ -2,10 +2,10 @@ import React from "react"
 import Dialog from "@mui/material/Dialog"
 import { Box, DialogActions, DialogContent, Grid, Typography } from "@mui/material"
 import styled from "@emotion/styled"
-import { DialogTitle } from "./dialogTitle"
-import { Station } from "../models/stations"
-import { CustomTextField } from "./informationPopupElements/textfield"
-import { AvailableVehicles } from "./informationPopupElements/availableVehicles"
+import { DialogTitle } from "../dialogTitle"
+import { Station } from "../../models/stations"
+import { CustomTextField } from "./textfield"
+import { AvailableVehicles } from "./availableVehicles"
 
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({

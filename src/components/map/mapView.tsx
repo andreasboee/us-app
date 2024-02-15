@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { gbfsArea } from "../../models/gbfsArea";
 import GoogleMapReact from "google-map-react";
 import { Station } from "../../models/stations";
-import StationInfoPupup from "../stationInfoPopup";
+import StationInfoPupup from "../informationPopupElements/stationInfoPopup";
 import StationMarker from "../markers/stationMarker";
 
 const Marker = ({ children, lat, lng }: { children: any, lat: number, lng: number }) => children

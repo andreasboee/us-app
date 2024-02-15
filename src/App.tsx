@@ -12,10 +12,6 @@ function Root() {
 
       <Routes>
         <Route path="/" element={<MapScreen />} />
-        {/* <Route path="/home" element={<Home />} />
-        <Route path="/upcoming/:user" element={<Upcoming />} />
-        <Route path="/record/:user" element={<Record />} />
-        <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </div>
   );

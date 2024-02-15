@@ -2,9 +2,9 @@ import React from "react"
 import Dialog from "@mui/material/Dialog"
 import { Box, DialogActions, DialogContent, Grid, Typography } from "@mui/material"
 import styled from "@emotion/styled"
-import { gbfsArea } from "../models/gbfsArea"
-import { DialogTitle } from "./dialogTitle"
-import { CustomTextField } from "./informationPopupElements/textfield"
+import { gbfsArea } from "../../models/gbfsArea"
+import { DialogTitle } from "../dialogTitle"
+import { CustomTextField } from "./textfield"
 
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
