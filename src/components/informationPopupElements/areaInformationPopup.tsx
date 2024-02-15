@@ -13,10 +13,6 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
 
 export default function AreaInformationPopup(props: { handleClose: () => void; open: boolean, area: gbfsArea }) {
 
-    // const name = useRef("")
-    // const tlf = useRef("")
-    // const note = useRef("")
-
     const handleClose = () => {
         props.handleClose()
     }
