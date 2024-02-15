@@ -74,25 +74,39 @@ export default function MapScreen() {
 
             let newArray: Station[] = inputArray
             const res = await getStationStatus(area)
-
             if (res?.data.stations.length) {
-                inputArray?.forEach((station) => {
+                newArray?.forEach((station) => {
                     const id = station.station_id
                     const correspondingStationData = res.data.stations.find((i) => i.station_id === id)
+                    let num_vehicles_available = 0
+                    let num_docks_available = 0
+                    let is_renting = false
+                    let is_returning = false
+                    let vehicle_types_available: [{ vehicle_type_id: string, count: number }] = [
+                        {
+                            vehicle_type_id: "",
+                            count: 0
+                        }
+                    ]
+                    let last_reported = 0
                     if (correspondingStationData) {
-                        station.num_vehicles_available = correspondingStationData.num_bikes_available
-                        station.num_docks_available = correspondingStationData.num_docks_available
-                        station.is_renting = correspondingStationData.is_renting
-                        station.is_returning = correspondingStationData.is_returning
-                        station.vehicle_types_available = correspondingStationData.vehicle_types_available
-                        station.last_reported = correspondingStationData.last_reported
-
-                        console.log(station.num_docks_available)
+                        num_vehicles_available = correspondingStationData.num_bikes_available
+                        num_docks_available = correspondingStationData.num_docks_available
+                        is_renting = correspondingStationData.is_renting
+                        is_returning = correspondingStationData.is_returning
+                        vehicle_types_available = correspondingStationData.vehicle_types_available
+                        last_reported = correspondingStationData.last_reported
 
                     }
+                    station.num_vehicles_available = num_vehicles_available
+                    station.num_docks_available = num_docks_available
+                    station.is_renting = is_renting
+                    station.is_returning = is_returning
+                    station.vehicle_types_available = vehicle_types_available
+                    station.last_reported = last_reported
                     newArray = inputArray
-                }
-                )
+                });
+
             }
 
             setStations(newArray)

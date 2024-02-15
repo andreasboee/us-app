@@ -4,6 +4,8 @@ import { DialogActions, DialogContent, Grid, Typography } from "@mui/material"
 import styled from "@emotion/styled"
 import { DialogTitle } from "./dialogTitle"
 import { Station } from "../models/stations"
+import { CustomTextField } from "./informationPopupElements/textfield"
+import { AvailableVehicles } from "./informationPopupElements/availableVehicles"
 
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
@@ -12,24 +14,6 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
 
 export default function StationInfoPupup(props: { handleClose: () => void; open: boolean, station?: Station }) {
 
-    // interface VehicleType {
-    //     vehicle_type_id: string,
-    //     count: number
-    // }
-
-    // function GetVehicleTypes() {
-    //     const types: VehicleType[] = []
-    //     props.station?.vehicle_types_available.forEach((type: VehicleType) => types.push(type));
-    //     types.forEach((element) => {
-    //         return (
-    //             <div>
-    //                 <Typography>
-    //                     {element.vehicle_type_id} ":" {element.count}
-    //                 </Typography>
-    //             </div>
-    //         )
-    //     })
-    // }
 
 
 
@@ -108,35 +92,16 @@ export default function StationInfoPupup(props: { handleClose: () => void; open:
                         }}
                     >
                         <Grid container direction="column" spacing={2}>
-
-                            <Typography variant="body2" color="#000">
-                                Address: {props.station?.address}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Capacity: {props.station?.capacity}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Available Bikes: {props.station?.num_vehicles_available}
-                            </Typography>
-
-
-                            <Typography variant="body2" color="#000">
-                                Station ID: {props.station?.station_id}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Cross Street: {props.station?.cross_street}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Rental URI Android: {props.station?.rental_uris.android}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Rental URI Android: {props.station?.rental_uris.ios}
-                            </Typography>
-
-                            <Typography variant="body2" color="#000">
-                                Lat: {props.station?.lat},
-                                Lng: {props.station?.lat}
-                            </Typography>
+                            <AvailableVehicles station={props.station} />
+                            <CustomTextField color="#000" text={"Address: " + props.station?.address} />
+                            <CustomTextField color="#000" text={"Capacity: " + props.station?.capacity} />
+                            <CustomTextField color="#000" text={"Available Bikes: " + props.station?.num_vehicles_available} />
+                            <CustomTextField color="#000" text={"Station ID: " + props.station?.station_id} />
+                            <CustomTextField color="#000" text={"Cross Street: " + props.station?.cross_street} />
+                            <CustomTextField color="#000" text={"Rental URI Android: " + props.station?.rental_uris.android} />
+                            <CustomTextField color="#000" text={"Rental URI iOS: " + props.station?.rental_uris.ios} />
+                            <CustomTextField color="#000" text={"Lat: " + props.station?.lat} />
+                            <CustomTextField color="#000" text={"Lng: " + props.station?.lon} />
 
 
 

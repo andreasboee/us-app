@@ -4,6 +4,7 @@ import { DialogActions, DialogContent, Grid, Typography } from "@mui/material"
 import styled from "@emotion/styled"
 import { gbfsArea } from "../models/gbfsArea"
 import { DialogTitle } from "./dialogTitle"
+import { CustomTextField } from "./informationPopupElements/textfield"
 
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
@@ -96,27 +97,15 @@ export default function AreaInformationPopup(props: { handleClose: () => void; o
                         }}
                     >
                         <Grid container direction="column" spacing={2}>
-                            <Typography variant="body2" color="#000">
-                                System Name: {props.area.areaName}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Operator: {props.area.operator}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Phone Number: {props.area.phone_number}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Last updated: {props.area.last_updated}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                TTL: {props.area.ttl}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Rental Url Android: {props.area.rental_apps.android.store_uri}
-                            </Typography>
-                            <Typography variant="body2" color="#000">
-                                Rental Url iOS: {props.area.rental_apps.ios.store_uri}
-                            </Typography>
+
+                            <CustomTextField color="#000" text={"System ID: " + props.area.system_id} />
+                            <CustomTextField color="#000" text={"Operator: " + props.area.operator} />
+                            <CustomTextField color="#000" text={"Phone Number: " + props.area.phone_number} />
+                            <CustomTextField color="#000" text={"Last updated: " + props.area.last_updated} />
+                            <CustomTextField color="#000" text={"TTL: " + props.area.ttl} />
+                            <CustomTextField color="#000" text={"Rental Url Android: " + props.area.rental_apps.android.store_uri} />
+                            <CustomTextField color="#000" text={"Rental Url iOS: " + props.area.rental_apps.ios.store_uri} />
+
                         </Grid>
 
 
