@@ -15,7 +15,6 @@ export default function MapView(props: { area: gbfsArea; stations: Station[]; })
 
     const { area, stations } = props
 
-
     useEffect(() => {
 
     }, [stations])
@@ -44,12 +43,6 @@ export default function MapView(props: { area: gbfsArea; stations: Station[]; })
         zoom: area.zoom,
     }
     const maxZoom = 20
-
-
-
-
-
-
 
     return (
         <div>
