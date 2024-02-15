@@ -1,122 +1,94 @@
-import "ol/ol.css";
-import { Map, View } from "ol";
-import TileLayer from "ol/layer/Tile";
-import { Modify } from "ol/interaction";
-import { Vector as VectorSource } from "ol/source";
+
 import React, { useEffect, useRef, useState } from "react";
-import { Grid } from "@mui/material";
 import { gbfsArea } from "../../models/gbfsArea";
-import XYZ from 'ol/source/XYZ';
+import GoogleMapReact from "google-map-react";
+import { Station } from "../../models/stations";
+import StationInfoPupup from "../informationPopupElements/stationInfoPopup";
+import StationMarker from "../markers/stationMarker";
 
+const Marker = ({ children, lat, lng }: { children: any, lat: number, lng: number }) => children
 
+export default function MapView(props: { area: gbfsArea; stations: Station[]; }) {
+    const [openStationDialog, setOpenStationDialog] = useState(false)
+    const [selectedStation, setSelectedStation] = useState<Station>()
+    const mapRef = useRef<any>()
 
-
-export default function MapView(area: gbfsArea) {
-    const mapEl = useRef(null);
-
-    // const [currentArea, setCurrentArea] = useState<gbfsArea>(area)
-
-
-
-    const source = new VectorSource();
-
-    // var kmlLayer = new VectorLayer({
-    //     source: new VectorSource({
-    //         url:
-    //             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=kml&minmagnitude=5.8",
-    //         format: new KML()
-    //     })
-    // });
-
-    var modify = new Modify({ source: source });
-
-    // var vectorLayer = new VectorLayer({
-    //     source: source,
-    //     style: new Style({
-    //         image: new Icon({
-    //             anchor: [0.5, 46],
-    //             size: [50, 50],
-
-    //             src:
-    //                 "https://www.flaticon.com/svg/vstatic/svg/841/841345.svg?token=exp=1619212955~hmac=d2377618f3d4e4a81697c3acdb83b8f8"
-    //         })
-    //     })
-    // });
-
-    // const openCycleMapLayer = new TileLayer({
-    //     source: new OSM({
-    //         attributions: [
-    //             'All maps © <a href="https://www.opencyclemap.org/">OpenCycleMap</a>',
-    //             ATTRIBUTION,
-    //         ],
-    //         url:
-    //             'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png' +
-    //             '?apikey=Your API key from https://www.thunderforest.com/docs/apikeys/ here',
-    //     }),
-    // });
-
-    // const openSeaMapLayer = new TileLayer({
-    //     source: new OSM({
-    //         attributions: [
-    //             'All maps © <a href="https://www.openseamap.org/">OpenSeaMap</a>',
-    //             ATTRIBUTION,
-    //         ],
-    //         opaque: false,
-    //         url: 'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
-    //     }),
-    // });
-
-
-
-    const map = new Map({
-        layers: [
-            new TileLayer({
-                source: new XYZ({
-                    url: 'http://mt1.google.com/vt/lyrs=m@113&hl=en&&x={x}&y={y}&z={z}&key=AIzaSyCwgclt0TWLK3i0safWmFOJYpwwuGHwQkA',
-                })
-            })
-        ],
-        target: 'map',
-        view: new View({
-            maxZoom: 18,
-            center: [area.pos.lat, area.pos.lng],
-            zoom: 10,
-        }),
-    });
-
-
-    // const map = new Map({
-    //     layers: [
-    //         new TileLayer({
-    //             source: new OSM()
-    //         }),
-    //         vectorLayer
-    //     ],
-    //     view: new View({
-    //         center: [area.pos.lat, area.pos.lng],
-    //         zoom: area.zoom
-    //     })
-    // });
-
-    map.addInteraction(modify);
+    const { area, stations } = props
 
     useEffect(() => {
-        map.setTarget(mapEl.current!!);
-    },);
+
+    }, [stations])
+
+    useEffect(() => {
+        mapRef.current?.setCenter({ lat: area.pos.lat, lng: area.pos.lng })
+    }, [area]);
 
 
+    function handleCloseStationInformation() {
+        setOpenStationDialog(false)
+    }
 
+
+    const handleOpenStationInformation = (station: Station) => {
+
+        setSelectedStation(station)
+        setOpenStationDialog(true)
+    };
+
+    const mapConf = {
+        center: {
+            lat: area.pos.lat,
+            lng: area.pos.lng,
+        },
+        zoom: area.zoom,
+    }
+    const maxZoom = 20
 
     return (
-        <Grid container direction="column">
-            <Grid container item xs alignContent="flex-end" display="flex" alignItems="flex-end" direction="row">
+        <div>
+            {
+                <StationInfoPupup
+                    handleClose={handleCloseStationInformation}
+                    open={openStationDialog}
+                    station={selectedStation} />}
+            <GoogleMapReact
+                bootstrapURLKeys={{ "key": "AIzaSyDvw2J0bsXCGiodf8aT4rQxbKoWTOmCwGA" }}
+                center={mapConf.center}
+                zoom={mapConf.zoom}
+                options={(map) => ({
+                    mapTypeId: map.MapTypeId.HYBRID,
+                    fullscreenControl: false,
+                    zoomControl: true,
+                    maxZoom,
+                })}
+                style={{ height: "100%", width: "100vw" }}
+                yesIWantToUseGoogleMapApiInternals
+                onGoogleApiLoaded={({ map }) => {
+                    mapRef.current = map
+                }}
 
 
+            >
 
-            </Grid>
-            <Grid item xs={6}>
-                <div ref={mapEl} style={{ height: "100vh" }}></div>
-            </Grid>
-        </Grid>
-    );
+                {stations.length &&
+                    stations.map((station) => {
+                        const latitude = station.lat
+                        const longitude = station.lon
+
+                        return (
+                            <Marker
+
+                                key={`station-${station.station_id}`}
+                                lat={latitude}
+                                lng={longitude}>
+                                {station.capacity}
+                                <StationMarker station={station} onClick={() => { handleOpenStationInformation(station) }} />
+                            </Marker>
+                        )
+                    })}
+
+
+            </GoogleMapReact>
+        </div >
+    )
 }

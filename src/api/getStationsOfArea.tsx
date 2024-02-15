@@ -1,23 +1,27 @@
 import { gbfsArea } from "../models/gbfsArea";
-
-export default function getAreaInformation(area: gbfsArea) {
-
-    const axios = require('axios');
-
-    // instance.defaults.headers.common['Authorization'] = area.identifier;
-    // axios.defaults.headers.post['Client-Identifier'] = area.identifier;
-
-    const getStations = async () => axios.get(area.baseUrl + area.stationInfoSubUrl, {
-        headers: {
-            'Client-Identifier': area.identifier,
-        }
-    })
-        .then((res: { data: any; }) => console.log(res.data))
-        .catch((err: any) => console.error(err));
+import axios from 'axios';
+import { Station } from "../models/stations";
 
 
 
-    return getStations
+interface ResponseStructure {
+    last_updated: number,
+    ttl: number,
+    version: string,
+    data: {
+        stations: Station[]
+    }
+}
+
+export default async function getStationInformation(area: gbfsArea) {
+
+    const result = await axios.get(area.baseUrl + area.stationInfoSubUrl).then(res => res.data as ResponseStructure)
+        .catch((err: any) => {
+            console.error(err)
+            return null
+        });
+    return result
+
 
 
 }

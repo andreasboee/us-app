@@ -1,20 +1,38 @@
 import { gbfsArea } from "../models/gbfsArea";
+import axios from 'axios';
 
-export default function getAreaInformation(area: gbfsArea) {
+export interface StationResponseStructure {
+    last_updated: string,
+    data: {
+        stations: [
+            {
+                is_installed: boolean,
+                is_renting: boolean,
+                num_bikes_available: number,
+                num_docks_available: number,
+                last_reported: number,
+                is_returning: boolean,
+                station_id: string,
+                vehicle_types_available: [
+                    {
+                        vehicle_type_id: string,
+                        count: number
+                    }
+                ]
+            }
+        ]
+    }
+}
 
-    const axios = require('axios');
+export default async function getStationStatus(area: gbfsArea) {
 
-    // instance.defaults.headers.common['Authorization'] = area.identifier;
-    // axios.defaults.headers.post['Client-Identifier'] = area.identifier;
+    const result = await axios.get(area.baseUrl + area.stationStatusUrl).then(res => res.data as StationResponseStructure)
+        .catch((err: any) => {
+            console.error(err)
+            return null
+        });
 
-    const getStationStatus = async () => axios.get(area.baseUrl + area.stationStatusUrl, {
-        headers: {
-            'Client-Identifier': area.identifier,
-        }
-    })
-        .then((res: { data: any; }) => console.log(res.data))
-        .catch((err: any) => console.error(err));
-
-    return getStationStatus
+    return result
 
 }
+
