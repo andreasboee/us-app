@@ -16,10 +16,9 @@ import { gbfsArea } from "../models/gbfsArea";
 import getAreaInformation from "../api/getStationsOfArea";
 import AreaInformationPopup from "../components/informationPopupElements/areaInformationPopup";
 import getSystemInformation from "../api/getSystemInformation";
-import { OsloArea } from "../constants/osloArea";
 import { Station } from "../models/stations";
 import getStationStatus from "../api/getStationStatus";
-
+import { OsloArea } from "../constants/osloArea";
 
 export default function MapScreen() {
     const [area, setArea] = useState<gbfsArea>(OsloArea)

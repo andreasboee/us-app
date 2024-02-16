@@ -52,7 +52,7 @@ export default function MapView(props: { area: gbfsArea; stations: Station[]; })
                     open={openStationDialog}
                     station={selectedStation} />}
             <GoogleMapReact
-                bootstrapURLKeys={{ "key": "AIzaSyDvw2J0bsXCGiodf8aT4rQxbKoWTOmCwGA" }}
+                bootstrapURLKeys={{ "key": process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
                 center={mapConf.center}
                 zoom={mapConf.zoom}
                 options={(map) => ({
